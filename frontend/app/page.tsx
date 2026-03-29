@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { Sparkles, ScanLine, ChevronRight } from "lucide-react";
-import { MOCK_STYLE_DNA, BODY_SHAPE_META } from "@/types/dna";
+import { Sparkles, ScanLine, ChevronRight, Fingerprint } from "lucide-react";
+import { MOCK_STYLE_DNA, BODY_SHAPE_META, type StyleDNA } from "@/types/dna";
+import { loadDNA } from "@/lib/dna-store";
 
 /* ── Animation variants ───────────────────────────────────────────────── */
 
@@ -104,7 +105,14 @@ function useCoachingOfTheDay(dna: typeof MOCK_STYLE_DNA): CoachingEntry {
 /* ── Component ────────────────────────────────────────────────────────── */
 
 export default function HomePage() {
-  const dna      = MOCK_STYLE_DNA;
+  const [dna, setDna] = useState<StyleDNA>(MOCK_STYLE_DNA);
+  const [hasSavedDNA, setHasSavedDNA] = useState(false);
+
+  useEffect(() => {
+    const saved = loadDNA();
+    if (saved) { setDna(saved); setHasSavedDNA(true); }
+  }, []);
+
   const coaching = useCoachingOfTheDay(dna);
   const shapeMeta = BODY_SHAPE_META[dna.body_shape.primary.shape];
   const swatches  = dna.color_dna.swatches.slice(0, 4);
@@ -161,10 +169,26 @@ export default function HomePage() {
             href="/dna"
             className="flex items-center gap-0.5 text-[10px] font-semibold text-gold"
           >
-            자세히 <ChevronRight size={10} />
+            {hasSavedDNA ? "자세히" : "설정하기"} <ChevronRight size={10} />
           </Link>
         </div>
 
+        {/* DNA 미설정 상태 */}
+        {!hasSavedDNA && (
+          <Link href="/dna" className="flex items-center gap-3 rounded-xl border border-dashed border-gold/40 bg-gold/5 px-4 py-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-charcoal">
+              <Fingerprint size={14} className="text-ivory" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-charcoal">나만의 DNA 설정하기</p>
+              <p className="text-[11px] text-charcoal/50">체형·퍼스널컬러를 등록하면 맞춤 코칭이 시작됩니다</p>
+            </div>
+            <ChevronRight size={14} className="ml-auto text-gold" />
+          </Link>
+        )}
+
+        {/* DNA 설정 완료 상태 */}
+        {hasSavedDNA && (
         <div className="flex items-start gap-4">
           {/* Body shape */}
           <div className="flex-1">
@@ -202,6 +226,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        )}
       </motion.section>
 
       {/* ── Primary CTA ── */}

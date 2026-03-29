@@ -158,14 +158,24 @@ export default function ScanPage() {
   };
 
   /* ── IDLE → CAPTURING ──────────────────────────────────────── */
-  const handleStartCapture = useCallback(async () => {
-    setState("CAPTURING");
+  const handleStartCapture = useCallback(() => {
+    setCameraAvailable(true); // 이전 실패 상태 리셋
     setApiError(null);
-    await new Promise((r) => setTimeout(r, 80));
-    if (!videoRef.current) return;
-    const stream = await startCamera(videoRef.current);
-    if (!stream) setCameraAvailable(false);
-    else streamRef.current = stream;
+    setState("CAPTURING");
+  }, []);
+
+  /**
+   * Callback ref: <video>가 DOM에 실제로 마운트된 순간 카메라를 시작한다.
+   * AnimatePresence mode="wait" 의 exit 애니메이션(300ms)이 끝나야
+   * 다음 요소가 마운트되므로, setTimeout 폴링 대신 이 방식이 정확하다.
+   */
+  const handleVideoMount = useCallback((el: HTMLVideoElement | null) => {
+    videoRef.current = el;
+    if (!el) return;
+    startCamera(el).then((stream) => {
+      if (!stream) setCameraAvailable(false);
+      else streamRef.current = stream;
+    });
   }, []);
 
   /* ── CAPTURING → ANALYZING ─────────────────────────────────── */
@@ -388,7 +398,7 @@ export default function ScanPage() {
               >
                 {cameraAvailable ? (
                   <video
-                    ref={videoRef}
+                    ref={handleVideoMount}
                     autoPlay
                     playsInline
                     muted
