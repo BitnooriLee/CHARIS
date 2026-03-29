@@ -1,0 +1,42 @@
+[PRD] CHARIS AI: The Graceful Style Coach (v1.0)
+1. Project Overview
+Product Name: CHARIS (카리스) AI
+Definition: A mobile-first PWA style coach that uses AI to analyze 4 body shapes and 16 personal color types, providing positive reinforcement styling and silhouette-based simulations.
+Core Philosophy:
+Zero-Judgment: Replaces "This doesn't fit" with "This enhances your grace."
+Visual Proof: Shows the user wearing the clothes via AI silhouette overlays.
+Closet Rescue: Prioritizes reviving existing "forgotten" items over forced new consumption.
+2. Target Audience & Problem Statement
+Primary: Users who know their personal color/body type but struggle to apply it to real-world shopping or daily coordination.
+Secondary: Users with a "full closet but nothing to wear" who feel discouraged by judgmental fashion apps.
+The Problem: Existing apps are often too clinical or negative ("Worst colors," "Avoid these cuts"), creating a high psychological barrier.
+3. Functional Requirements
+3.1 Styling DNA Profiling (The Brain)
+Body Shape Analysis (4 Ratios):
+Calculate geometric ratios between shoulders, waist, and hips.
+Categorize into: Inverted Triangle, Pear, Hourglass, Rectangle.
+Personal Color Analysis (16 Types):
+Utilize the PCCS (Practical Color Co-ordinate System) to diagnose 16 sub-types across the 4 seasons (e.g., Summer Mute, Autumn Deep).
+Data Persistence: Manage unique user profiles as a Style DNA object for consistent cross-feature coaching.
+3.2 Mirror of Charis (Visualization Module)
+Virtual Try-on: High-fidelity AI overlay of garments onto the user’s actual silhouette photo.
+Visual Guidance: Display "Grace Lines" (visual cues) showing why a specific neckline or hemline balances the user's specific frame.
+3.3 Closet Rescue (Sustainability Module)
+Item Revival: Users upload a "difficult" item; AI generates 3+ coordination sets using the user's existing wardrobe.
+Strategic Additions: Only suggest new purchases if they act as a "missing link" to unlock multiple new outfits from the current closet.
+3.4 Context-Aware TPO Feedback
+Scenario Logic: Weighted styling rules for specific contexts (Wedding, Office, Date, Casual).
+Feedback Loop: Praise for current effort → Data-backed enhancement → Final "Graceful" alternative.
+4. Technical Requirements
+Platform: Mobile-First PWA (Next.js, Tailwind CSS).
+AI Engine: Claude 3.7 Sonnet (Vision/Reasoning), Flux/Stable Diffusion API (Image Generation).
+Backend: FastAPI (Python) with strict type hinting.
+Security: End-to-end encryption for full-body photos and sensitive body metrics.
+5. User Experience (UX) Principles
+Language Policy: Strict ban on negative words. Use "Enhance," "Illuminate," "Balance," "Graceful."
+Kitschy-Luxe Aesthetic: A hybrid of Gen-Z "Kitsch" (fun/bold) and High-End Fashion Editorial (clean/elegant).
+Performance: Deliver visual simulation results in under 5 seconds.
+6. Success Metrics (KPIs)
+Rescue Success Rate: User "Save" rate for outfits suggested in the Closet Rescue module.
+Simulation Depth: Average number of virtual try-ons per session.
+Sentiment Score: User feedback specifically regarding the "Positive Coaching" experience.

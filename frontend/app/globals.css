@@ -1,0 +1,104 @@
+/* ── Pretendard — 한국어 기본 폰트 ──────────────────────────────────── */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+
+@import "tailwindcss";
+
+/* ─── Kitschy-Luxe Design Tokens ────────────────────────────────────────── */
+@theme {
+  /* Color Palette */
+  --color-charcoal:    #1C1C1E;
+  --color-charcoal-50: #F4F4F5;
+  --color-ivory:       #F8F6F0;
+  --color-gold:        #C9A84C;
+  --color-gold-light:  #E8D5A3;
+  --color-gold-dark:   #A0832E;
+  --color-pearl:       #EDE8DF;
+  --color-blush:       #D4A5A5;
+  --color-blush-light: #F0DFDF;
+  --color-sage:        #9BAD9A;
+
+  /* ── Typography ──────────────────────────────────────────────────
+   *
+   * font-display  (Cormorant)  → 영문 고유 명사 / 브랜드 레이블 전용
+   *                               예: "CHARIS", "Style DNA", "Grace Goal"
+   *
+   * font-sans     (Pretendard) → 한국어 전체 + 모든 본문 UI
+   *
+   * 타입 스케일 가이드
+   *  H1 Hero   : text-3xl  font-bold  leading-tight   (한국어 히어로 헤딩)
+   *  H1 Page   : text-2xl  font-bold  leading-tight   (각 페이지 주 제목)
+   *  H2        : text-xl   font-bold  leading-tight
+   *  Body Lg   : text-base font-medium leading-relaxed
+   *  Body      : text-sm   font-normal leading-relaxed
+   *  Caption   : text-xs   tracking-tight
+   *  Micro     : text-[10px] uppercase tracking-[0.18em]
+   *
+   * ──────────────────────────────────────────────────────────────── */
+  --font-display: "Cormorant", "Georgia", serif;
+  --font-sans:    "Pretendard Variable", "Pretendard",
+                  -apple-system, BlinkMacSystemFont,
+                  "Apple SD Gothic Neo", "Noto Sans KR",
+                  system-ui, sans-serif;
+  --font-mono:    "DM Mono", monospace;
+
+  /* Spacing */
+  --spacing-nav: 72px;
+
+  /* Border Radius */
+  --radius-card: 16px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 2px 16px 0 rgb(28 28 30 / 0.06);
+  --shadow-nav:  0 -1px 0 0 #EDE8DF, 0 -8px 24px 0 rgb(28 28 30 / 0.04);
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--color-pearl);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  /* 자간: 한국어는 -0.02em이 가장 가독성이 높음 */
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography Utilities ───────────────────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+
+/* 영문 브랜드 레이블에 font-display를 사용할 때 letter-spacing은 별도 지정 */
+.font-display { letter-spacing: 0; }
+
+/* ─── Scrollbar 숨김 ─────────────────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* ─── Gold Gradient ──────────────────────────────────────────────────────── */
+.gradient-gold {
+  background: linear-gradient(135deg, #C9A84C 0%, #E8D5A3 50%, #C9A84C 100%);
+}
+
+/* ─── Active Tab Indicator ───────────────────────────────────────────────── */
+.nav-indicator {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background-color: var(--color-gold);
+}
