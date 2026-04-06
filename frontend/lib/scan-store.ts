@@ -9,7 +9,8 @@
 import { OutfitTPOScore } from "@/types/tpo";
 import { ScanAnalyzeResponse } from "@/lib/api";
 
-const STORE_KEY    = "charis_scan_result";
+const STORE_KEY_V1 = "charis_scan_result:v1";
+const STORE_KEY_LEGACY = "charis_scan_result";
 const EXPIRY_MS    = 30 * 60 * 1000; // 30분
 
 interface StoredScanResult {
@@ -34,7 +35,8 @@ export function storeScanResult(response: ScanAnalyzeResponse): void {
   };
 
   try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(payload));
+    localStorage.removeItem(STORE_KEY_LEGACY);
+    localStorage.setItem(STORE_KEY_V1, JSON.stringify(payload));
   } catch {
     // localStorage full or unavailable — fail silently
   }
@@ -45,21 +47,29 @@ export function storeScanResult(response: ScanAnalyzeResponse): void {
 export function loadScanResult(): StoredScanResult | null {
   if (typeof window === "undefined") return null;
 
-  const raw = localStorage.getItem(STORE_KEY);
+  let raw = localStorage.getItem(STORE_KEY_V1);
+  if (!raw) {
+    raw = localStorage.getItem(STORE_KEY_LEGACY);
+    if (raw) {
+      localStorage.setItem(STORE_KEY_V1, raw);
+      localStorage.removeItem(STORE_KEY_LEGACY);
+    }
+  }
   if (!raw) return null;
 
   try {
     const parsed: StoredScanResult = JSON.parse(raw);
 
-    // 만료 체크
     if (Date.now() - parsed.saved_at > EXPIRY_MS) {
-      localStorage.removeItem(STORE_KEY);
+      localStorage.removeItem(STORE_KEY_V1);
+      localStorage.removeItem(STORE_KEY_LEGACY);
       return null;
     }
 
     return parsed;
   } catch {
-    localStorage.removeItem(STORE_KEY);
+    localStorage.removeItem(STORE_KEY_V1);
+    localStorage.removeItem(STORE_KEY_LEGACY);
     return null;
   }
 }
@@ -68,7 +78,8 @@ export function loadScanResult(): StoredScanResult | null {
 
 export function clearScanResult(): void {
   if (typeof window === "undefined") return;
-  localStorage.removeItem(STORE_KEY);
+  localStorage.removeItem(STORE_KEY_V1);
+  localStorage.removeItem(STORE_KEY_LEGACY);
 }
 
 /* ── 분 단위 경과 시간 ──────────────────────────────────────────────── */

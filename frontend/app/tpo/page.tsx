@@ -1,9 +1,28 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Compass, Sparkles, Eye } from "lucide-react";
-import { StyleRadarChart } from "@/components/tpo/StyleRadarChart";
+
+/** Recharts는 초기 번들에서 분리 — TPO 진입 시에만 로드 (Vercel bundle-dynamic-imports) */
+const StyleRadarChart = dynamic(
+  () =>
+    import("@/components/tpo/StyleRadarChart").then((m) => ({
+      default: m.StyleRadarChart,
+    })),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="mx-auto flex h-[270px] w-full max-w-[340px] items-center justify-center rounded-lg bg-pearl/30 text-xs text-charcoal/40"
+        aria-busy="true"
+      >
+        차트 로딩…
+      </div>
+    ),
+  },
+);
 import { CoachingCard } from "@/components/tpo/CoachingCard";
 import { ScoreBadge } from "@/components/tpo/ScoreBadge";
 import { AxisScoreBar } from "@/components/tpo/AxisScoreBar";

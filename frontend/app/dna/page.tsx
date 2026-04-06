@@ -16,7 +16,7 @@ import {
   BODY_SHAPE_META,
   type BodyShape, type StyleDNA, type Season, type SubTone,
 } from "@/types/dna";
-import { storeDNA, loadDNA } from "@/lib/dna-store";
+import { storeDNA, loadDNA, clearDNA } from "@/lib/dna-store";
 
 /* ═══════════════ Animation variants ════════════════════════════════ */
 const SLIDE: Variants = {
@@ -233,7 +233,7 @@ export default function DNAPage() {
 
   const handleReset = useCallback(() => {
     if (!confirm("DNA 프로필을 초기화할까요?")) return;
-    localStorage.removeItem("charis_style_dna");
+    clearDNA();
     setDna(null); setStep("body"); setColorId(null); setView("setup");
   }, []);
 
