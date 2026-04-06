@@ -1,0 +1,1 @@
+"""CHARIS FastAPI backend package."""
